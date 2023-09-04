@@ -1,0 +1,112 @@
+openapi: 3.0.0
+info:
+  title: Flask API Trial
+  description: Describes endpoints for Flask API Trial
+  version: 3.0.0
+paths:
+  "/users":
+    get:
+      operationId: app.v1.handlers.get_users
+      tags:
+        - v1
+      summary: Users endpoint description
+      responses:
+        "200":
+          description: Get users endpoint
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/GetUser'
+    post:
+      operationId: app.v1.handlers.create_user
+      tags:
+        - v1
+      summary: Create user endpoint description
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateUserBody"
+      responses:
+        "200":
+          description: API response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetUser"
+  "/users/{user_id}":
+    get:
+      operationId: app.v1.handlers.get_user
+      tags:
+        - v1
+      summary: Get user endpoint description
+      parameters:
+        - name: user_id
+          in: path
+          description: User UUID
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        "200":
+          description: Get user endpoint
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetUser'
+        "404":
+          description: User not found response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserNotFoundResponse'
+components:
+  schemas:
+    CreateUserBody:
+      required:
+        - first_name
+        - last_name
+        - email
+      properties:
+        first_name:
+          type: string
+          description: "First name"
+          example: "John"
+        last_name:
+          description: "Last name"
+          example: "Doe"
+        email:
+          description: "User email"
+          example: "john.doe@email.com"
+    GetUser:
+      type: object
+      properties:
+        first_name:
+          type: string
+          description: "First name"
+          example: "John"
+        last_name:
+          type: string
+          description: "Last name"
+          example: "Doe"
+        email:
+          type: string
+          description: "User email"
+          example: "john.doe@email.com"
+        uuid:
+          type: string
+          description: "UUID"
+          example: "11111111-1111-1111-1111-111111111111"
+        created_at:
+          type: string
+          description: "Created timestamp"
+          example: "2023-08-31T17:13:36.689Z"
+    UserNotFoundResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          example: "User with ID '11111111-1111-1111-1111-111111111111' not found"

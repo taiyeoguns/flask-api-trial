@@ -1,0 +1,55 @@
+---
+name: Build-and-push-container
+
+on:
+  release:
+    types:
+      - published
+  pull_request:
+    types:
+      - closed
+    branches:
+      - 'development/**'
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v2
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      # https://github.com/docker/build-push-action
+      - name: Build and push test container
+        if: github.event_name == 'pull_request' && 'github.event.pull_request.closed' && 'github.event.pull_request.merged'
+        uses: docker/build-push-action@v4
+        with:
+          context: .
+          file: ./Dockerfile-prod
+          push: true
+          tags: |
+            ghcr.io/${{ github.repository_owner }}/flask-api-trial-test:latest
+          no-cache: true
+          build-args: |
+            GIT_TOKEN=${{ secrets.GITHUB_TOKEN }}
+            GIT_BRANCH=${{ github.ref_name }}
+      - name: Build and push production container
+        if: github.event_name == 'release' && 'github.event.release.published'
+        uses: docker/build-push-action@v4
+        with:
+          context: .
+          file: ./Dockerfile-prod
+          push: true
+          tags: |
+            ghcr.io/${{ github.repository_owner }}/flask-api-trial:${{ github.ref_name }}
+            ghcr.io/${{ github.repository_owner }}/flask-api-trial:latest
+          no-cache: true
+          build-args: |
+            GIT_TOKEN=${{ secrets.GITHUB_TOKEN }}
+            GIT_BRANCH=${{ github.ref_name }}

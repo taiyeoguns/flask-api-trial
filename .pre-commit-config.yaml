@@ -1,0 +1,35 @@
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.4.0
+    hooks:
+      - id: check-yaml
+      - id: end-of-file-fixer
+      - id: debug-statements
+      - id: trailing-whitespace
+      - id: requirements-txt-fixer
+      - id: check-merge-conflict
+  - repo: https://github.com/psf/black
+    rev: 23.3.0
+    hooks:
+      - id: black
+  - repo: https://github.com/myint/autoflake
+    rev: v2.1.1
+    hooks:
+      - id: autoflake
+        name: Remove unused imports and unused variables
+        args:
+          [
+            "--in-place",
+            "--remove-unused-variables",
+            "--remove-all-unused-imports",
+          ]
+  - repo: local
+    hooks:
+      - id: pytest
+        name: Run tests
+        entry: pytest
+        args: ["-vv", "--cov=."]
+        language: system
+        stages: [push]
+        pass_filenames: false
+        always_run: true

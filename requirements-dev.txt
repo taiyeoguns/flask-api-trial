@@ -1,0 +1,6 @@
+-r requirements.txt
+-r requirements-test.txt
+black==23.3.0
+mypy==1.4.0
+pre-commit==3.3.3
+wemake-python-styleguide==0.18.0

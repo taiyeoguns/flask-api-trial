@@ -1,0 +1,8 @@
+[run]
+omit =
+	*tests/*
+	run.py
+	*env/*
+
+[report]
+fail_under=100
