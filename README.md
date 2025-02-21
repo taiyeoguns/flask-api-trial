@@ -1,6 +1,6 @@
 # flask-api-trial API
 
-Flask API Trial
+Flask API application to show typical Create, Read, Update, Delete (CRUD) operations.
 
 ## Requirements
 
@@ -93,15 +93,26 @@ The following environment variables should be set in the `.env` file even if the
 With Docker and Docker Compose set up, run:
 
 ```sh
-docker-compose up
-```
-
-Wait till setup is complete and all containers are started.
-
-In another terminal tab/window, run:
-
-```sh
-docker-compose exec flask_service flask db upgrade
+make docker-run
 ```
 
 Thereafter, application should be available at `http://localhost:5000`
+
+To authorise API requests, pass a valid API key as a header with key `X-Api-Key`
+
+### Example requests
+
+Sample host: `localhost:5000`
+Sample API Key: `11111111-1111-1111-1111-111111111111`
+
+#### Using `httpie`
+
+```sh
+http localhost:5000/v1/users X-Api-Key:11111111-1111-1111-1111-111111111111 first_name=test last_name=user email='test.user@email.com'
+```
+
+#### Using `curl`
+
+```sh
+curl -X POST http://localhost:5000/v1/users -H "X-Api-Key:11111111-1111-1111-1111-111111111111" -H "Content-Type: application/json" -d '{"first_name": "test", "last_name": "user", "email": "test.user@email.com"}'
+```

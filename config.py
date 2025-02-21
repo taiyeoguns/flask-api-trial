@@ -52,6 +52,8 @@ class Config:
     SECRET_KEY = config("SECRET_KEY", default="s3cRe7-kE4")
     DEBUG = False
     API_VERSION = "v1"
+    FLASK_RUN_PORT = config("FLASK_RUN_PORT", default=5000, cast=int)
+    API_KEY = config("API_KEY")
     SQLALCHEMY_DATABASE_URI = URL.create(
         drivername="postgresql",
         username=config("POSTGRES_USER"),

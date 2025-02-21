@@ -1,5 +1,4 @@
 -r requirements.txt
-factory-boy==3.2.1
 pytest==7.1.2
 pytest-cov==3.0.0
 requests-mock==1.10.0
