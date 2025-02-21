@@ -2,11 +2,14 @@
 
 Flask API application to show typical Create, Read, Update, Delete (CRUD) operations.
 
+Uses PostgreSQL for database and Redis for caching.
+
 ## Requirements
 
 - Python 3.9
 - Docker (for development)
 - Postgres
+- Redis
 
 ## Installation
 

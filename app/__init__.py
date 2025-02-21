@@ -1,8 +1,8 @@
 import connexion
-
-from app.extensions import db, migrate
-from config import Config
 from flask import Blueprint, redirect
+
+from app.extensions import cache, db, migrate
+from config import Config
 
 app_bp = Blueprint("app", __name__)
 
@@ -26,6 +26,7 @@ def create_app(cfg=Config):
     # initialize extensions
     db.init_app(flask_app)
     migrate.init_app(flask_app, db)
+    cache.init_app(flask_app)
 
     with flask_app.app_context():
         from app import models  # noqa

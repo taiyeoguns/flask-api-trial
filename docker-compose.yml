@@ -29,12 +29,28 @@ services:
     depends_on:
       db_service:
         condition: service_healthy
+      redis_service:
+        condition: service_healthy
     environment:
       - POSTGRES_HOST=db_container
+      - REDIS_URL=redis://redis_container:6379/0
     volumes:
       - ./:/usr/src/app
     stdin_open: true
     tty: true
+
+  redis_service:
+    container_name: redis_container
+    image: redis:7-bookworm
+    env_file:
+      - .env
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
 volumes:
   db_data:
