@@ -7,13 +7,14 @@ from connexion.lifecycle import ConnexionResponse
 from marshmallow import ValidationError
 from sqlalchemy.exc import SQLAlchemyError
 
-from app.extensions import db
+from app.extensions import db, cache
 from app.models import User
 from app.schemas import CreateUserInput, UserResponse
 
 logger = logging.getLogger(__name__)
 
 
+@cache.memoize(timeout=60 * 1)
 def get_users():
     users = [
         UserResponse(
@@ -70,6 +71,8 @@ def create_user(body: Dict[str, Any]) -> Dict[str, Any]:
     db.session.add(user)
     db.session.commit()
     db.session.refresh(user)
+
+    cache.delete_memoized(get_users)
 
     new_user = UserResponse(
         first_name=user.first_name,

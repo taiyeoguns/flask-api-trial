@@ -52,6 +52,8 @@ class Config:
     SECRET_KEY = config("SECRET_KEY", default="s3cRe7-kE4")
     DEBUG = False
     API_VERSION = "v1"
+    FLASK_RUN_PORT = config("FLASK_RUN_PORT", default=5000, cast=int)
+    API_KEY = config("API_KEY")
     SQLALCHEMY_DATABASE_URI = URL.create(
         drivername="postgresql",
         username=config("POSTGRES_USER"),
@@ -61,6 +63,9 @@ class Config:
         database=config("POSTGRES_DB"),
     )
     SQLALCHEMY_TRACK_MODIFICATIONS = False
+    CACHE_TYPE = "RedisCache"
+    CACHE_REDIS_URL = config("REDIS_URL", default="redis://localhost:6379/0")
+    CACHE_DEFAULT_TIMEOUT = 300
 
 
 class DevelopmentConfig(Config):
@@ -70,3 +75,4 @@ class DevelopmentConfig(Config):
 class TestingConfig(Config):
     TESTING = True
     SQLALCHEMY_DATABASE_URI = "sqlite://"
+    CACHE_TYPE = "NullCache"

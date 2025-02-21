@@ -1,11 +1,14 @@
 connexion[swagger-ui]==2.14.1
+factory-boy==3.2.1
 Flask==2.2.2
+Flask-Caching==2.3.0
 Flask-Migrate==3.1.0
 Flask-SQLAlchemy==2.5.1
 gunicorn==20.1.0
 marshmallow-dataclass==8.5.10
 psycopg2==2.9.6
 python-decouple==3.6
+redis==5.2.1
 requests==2.31.0
 rich==12.5.1
 SQLAlchemy==1.4.41
