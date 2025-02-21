@@ -5,6 +5,12 @@ from tests.factories import UserFactory
 VERSION_1_ENDPOINT = "/v1"
 
 
+def test_users_unauthorized(client):
+    """Test accessing /v1/users without authentication should return 401 Unauthorized."""
+    response = client.get("/v1/users")
+    assert response.status_code == HTTPStatus.UNAUTHORIZED
+
+
 def test_users(auth_client):
     UserFactory.create_batch(2)
 

@@ -99,7 +99,7 @@ With Docker and Docker Compose set up, run:
 make docker-run
 ```
 
-Thereafter, application should be available at `http://localhost:5000`
+Thereafter, the application should be available at `http://localhost:5000`
 
 To authorise API requests, pass a valid API key as a header with key `X-Api-Key`
 

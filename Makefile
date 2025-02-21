@@ -30,6 +30,10 @@ test: ## Run tests with pytest
 docker-up: ## Bring up environment in Docker
 	docker-compose up --build;
 
+.PHONY: docker-down
+docker-down: ## Bring down environment in Docker
+	docker-compose down;
+
 .PHONY: docker-db-upgrade
 docker-db-upgrade: ## Perform database upgrade when running in Docker
 	docker-compose exec flask_service flask db upgrade;
