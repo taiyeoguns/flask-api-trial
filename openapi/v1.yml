@@ -10,6 +10,23 @@ paths:
       tags:
         - v1
       summary: Users endpoint description
+      parameters:
+        - name: page
+          in: query
+          description: Page number
+          required: false
+          schema:
+            type: integer
+            format: int32
+            default: 1
+        - name: per_page
+          in: query
+          description: Number of items per page
+          required: false
+          schema:
+            type: integer
+            format: int32
+            default: 10
       security:
         - api_key: []
       responses:

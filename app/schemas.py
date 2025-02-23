@@ -22,3 +22,13 @@ class UserResponse:
     created_at: str
 
     Schema: ClassVar[Type[Schema]] = Schema  # noqa
+
+
+@dataclass
+class UserListResponse:
+    page: int
+    per_page: int
+    total: int
+    users: list[UserResponse]
+
+    Schema: ClassVar[Type[Schema]] = Schema

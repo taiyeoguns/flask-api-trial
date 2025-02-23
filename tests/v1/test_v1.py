@@ -17,8 +17,21 @@ def test_users(auth_client):
     response = auth_client.get("/v1/users")
 
     assert response.status_code == HTTPStatus.OK
-    assert isinstance(response.json, list)
-    assert len(response.json) == 3
+    assert isinstance(response.json.get("users"), list)
+    assert len(response.json.get("users")) == 3
+
+
+def test_users_pagination(auth_client):
+    UserFactory.create_batch(10)
+
+    response = auth_client.get("/v1/users?page=1&per_page=5")
+
+    assert response.status_code == HTTPStatus.OK
+    assert isinstance(response.json.get("users"), list)
+    assert len(response.json.get("users")) == 5
+    assert response.json.get("page") == 1
+    assert response.json.get("per_page") == 5
+    assert response.json.get("total") == 11
 
 
 def test_create_user_empty_body(auth_client):

@@ -9,25 +9,30 @@ from sqlalchemy.exc import SQLAlchemyError
 
 from app.extensions import db, cache
 from app.models import User
-from app.schemas import CreateUserInput, UserResponse
+from app.schemas import CreateUserInput, UserResponse, UserListResponse
 
 logger = logging.getLogger(__name__)
 
 
 @cache.memoize(timeout=60 * 1)
-def get_users():
-    users = [
-        UserResponse(
-            first_name=user.first_name,
-            last_name=user.last_name,
-            uuid=user.uuid,
-            email=user.email,
-            created_at=user.date_created,
-        )
-        for user in User.query.all()
-    ]
-
-    return UserResponse.Schema().dump(users, many=True)
+def get_users(page, per_page):
+    users = User.query.paginate(page, per_page, False)
+    user_list_response = UserListResponse(
+        page=users.page,
+        per_page=users.per_page,
+        total=users.total,
+        users=[
+            UserResponse(
+                first_name=user.first_name,
+                last_name=user.last_name,
+                uuid=user.uuid,
+                email=user.email,
+                created_at=user.date_created,
+            )
+            for user in users.items
+        ],
+    )
+    return UserListResponse.Schema().dump(user_list_response)
 
 
 def get_user(user_id):
