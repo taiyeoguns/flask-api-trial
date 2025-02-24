@@ -28,6 +28,7 @@ class UserResponse:
 class UserListResponse:
     page: int
     per_page: int
+    pages: int
     total: int
     users: list[UserResponse]
 

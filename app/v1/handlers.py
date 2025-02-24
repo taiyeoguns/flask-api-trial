@@ -7,20 +7,21 @@ from connexion.lifecycle import ConnexionResponse
 from marshmallow import ValidationError
 from sqlalchemy.exc import SQLAlchemyError
 
-from app.extensions import db, cache
+from app.extensions import cache, db
 from app.models import User
-from app.schemas import CreateUserInput, UserResponse, UserListResponse
+from app.schemas import CreateUserInput, UserListResponse, UserResponse
 
 logger = logging.getLogger(__name__)
 
 
 @cache.memoize(timeout=60 * 1)
 def get_users(page, per_page):
-    users = User.query.paginate(page, per_page, False)
+    users = User.query.paginate(page=page, per_page=per_page, error_out=False)
     user_list_response = UserListResponse(
         page=users.page,
         per_page=users.per_page,
         total=users.total,
+        pages=users.pages,
         users=[
             UserResponse(
                 first_name=user.first_name,
