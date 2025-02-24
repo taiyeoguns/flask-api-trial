@@ -10,6 +10,25 @@ paths:
       tags:
         - v1
       summary: Users endpoint description
+      parameters:
+        - name: page
+          in: query
+          description: Page number
+          required: false
+          schema:
+            type: integer
+            format: int32
+            default: 1
+            minimum: 1
+        - name: per_page
+          in: query
+          description: Number of items per page
+          required: false
+          schema:
+            type: integer
+            format: int32
+            default: 10
+            minimum: 1
       security:
         - api_key: []
       responses:
@@ -20,7 +39,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/GetUser'
+                  $ref: '#/components/schemas/UserListResponse'
     post:
       operationId: app.v1.handlers.create_user
       tags:
@@ -116,6 +135,29 @@ components:
         message:
           type: string
           example: "User with ID '11111111-1111-1111-1111-111111111111' not found"
+    UserListResponse:
+      type: object
+      properties:
+        page:
+          type: integer
+          description: "Page number"
+          example: 1
+        per_page:
+          type: integer
+          description: "Number of items per page"
+          example: 10
+        total:
+          type: integer
+          description: "Total number of users"
+          example: 100
+        pages:
+          type: integer
+          description: "Total number of pages"
+          example: 10
+        users:
+          type: array
+          items:
+            $ref: '#/components/schemas/GetUser'
   securitySchemes:
     api_key:
       type: apiKey

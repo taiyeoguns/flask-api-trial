@@ -12,6 +12,8 @@ def seed_user():
     except NoResultFound:
         UserFactory.create(api_key=Config.API_KEY)
 
+    UserFactory.create_batch(10)
+
 
 if __name__ == "__main__":
     with flask_app.app_context():
