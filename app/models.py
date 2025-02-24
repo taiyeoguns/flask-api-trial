@@ -1,8 +1,9 @@
-from datetime import datetime
+from datetime import datetime, timezone
 from uuid import uuid4
 
-from app import db
 from sqlalchemy_utils import UUIDType
+
+from app import db
 
 
 class BaseDbModel(db.Model):
@@ -16,7 +17,7 @@ class BaseDbModel(db.Model):
         nullable=False,
         default=uuid4,
     )
-    date_created = db.Column(db.DateTime, default=datetime.utcnow)
+    date_created = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc))
     date_updated = db.Column(db.DateTime)
     enabled = db.Column(db.Boolean, default=True, nullable=False)
 
